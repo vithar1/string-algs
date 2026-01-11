@@ -11,16 +11,47 @@ func LCP() int {
 func LCA() {
 }
 
+type RMQPreproc struct {
+	blen           int
+	blocks         []int
+	arr            []int
+	sparseTable    [][]int
+	blockMinTable  [][][]int
+	blockTypeCache []int
+}
+
 // RMQ 0 <= i, j < N, arr[i] = arr[i-1] +(-) 1
 // return index of the minimal element
 func RMQ(arr []int, i, j int) int {
 	return 0
 }
 
-func RMQPreproc(arr []int) ([][]int, [][][]int) {
+func genRMQPreproc(arr []int) RMQPreproc {
 	blen := int(math.Log2(float64(len(arr))) / 2)
 	blocks := minBlockSplit(arr, blen)
-	return sparseTable(blocks), blockMinTable(blen - 1)
+	blockTypeCache := make([]int, 0, len(blocks))
+	index := 0
+	for i := range len(arr)-1 {
+		if (i+1) % blen == 0 {
+			blockTypeCache = append(blockTypeCache, index)
+			index = 0	
+			continue
+		}
+		if arr[i+1] > arr[i] {
+			index <<= 1
+			index |= 1
+		} else {
+			index <<= 1
+		}
+	}
+	return RMQPreproc{
+		blen:           blen,
+		arr:            arr,
+		blocks:         blocks,
+		sparseTable:    sparseTable(blocks),
+		blockMinTable:  blockMinTable(blen - 1),
+		blockTypeCache: blockTypeCache,
+	}
 }
 
 func blockMinTable(blen int) [][][]int {
@@ -51,18 +82,18 @@ func blockMinTable(blen int) [][][]int {
 			lr = append(lr, rrow)
 		}
 		res = append(res, lr)
-		btNext(&bt)
+		btNext(bt)
 	}
 	return res
 }
 
-func btNext(bt *[]bool) {
-	i := len(*bt) - 1
-	for i > 0 && (*bt)[i] {
-		(*bt)[i] = false
+func btNext(bt []bool) {
+	i := len(bt) - 1
+	for i > 0 && bt[i] {
+		bt[i] = false
 		i--
 	}
-	(*bt)[i] = true
+	bt[i] = true
 }
 
 // keep indexes of the min in arr

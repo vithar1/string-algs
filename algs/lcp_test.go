@@ -37,17 +37,17 @@ func TestMinFromST(t *testing.T) {
 }
 
 func TestBTNext(t *testing.T) {
-	bt := &[]bool{false, false, false}
+	bt := []bool{false, false, false}
 	btNext(bt)
-	assert.Equal(t, []bool{false, false, true}, *bt)
+	assert.Equal(t, []bool{false, false, true}, bt)
 	btNext(bt)
-	assert.Equal(t, []bool{false, true, false}, *bt)
+	assert.Equal(t, []bool{false, true, false}, bt)
 	btNext(bt)
-	assert.Equal(t, []bool{false, true, true}, *bt)
+	assert.Equal(t, []bool{false, true, true}, bt)
 	btNext(bt)
-	assert.Equal(t, []bool{true, false, false}, *bt)
+	assert.Equal(t, []bool{true, false, false}, bt)
 	btNext(bt)
-	assert.Equal(t, []bool{true, false, true}, *bt)
+	assert.Equal(t, []bool{true, false, true}, bt)
 }
 
 func TestBlockMinTable(t *testing.T) {
