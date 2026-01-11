@@ -50,7 +50,8 @@ func reversTest() {
 }
 
 func randStr(length int) string {
-	chars := "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+	chars := "abcdefghijklmnopqrstuvwxyz"
+	// chars := "abc"
 	var b strings.Builder
 	b.Grow(length)
 	for range length{
